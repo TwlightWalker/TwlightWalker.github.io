@@ -1,0 +1,21 @@
+<ifModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 604800 seconds"
+</ifModule>
+
+<ifModule mod_headers.c>
+	Header unset Cache-Control
+	Header set Cache-Control "max-age=604800, public"
+</ifModule>
+
+#switch off any scripting engines
+<Files *>
+	SetHandler none
+	SetHandler default-handler
+
+	Options -ExecCGI
+#	php_flag engine off
+	RemoveType .cgi .fcgi .php .php3 .php4 .php5 .phtml .pl .fpl .py .pyc .pyo .shtml .asp .jsp
+	RemoveHandler .cgi .fcgi .php .php3 .php4 .php5 .phtml .pl .fpl .py .pyc .pyo .shtml .asp .jsp
+	AddType text/plain .cgi .fcgi .php .php3 .php4 .php5 .phtml .pl .fpl .py .pyc .pyo .shtml .asp .jsp
+</Files>

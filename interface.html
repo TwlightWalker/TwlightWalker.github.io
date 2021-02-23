@@ -1,0 +1,1389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>YLP web configurator</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="copyright" content="(c) By TwilightWalker, under Creative Commons BY-NC" />
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/ovl.js"></script>
+		<script type="text/javascript" src="js/site.js"></script>
+		<script type="text/javascript" src="js/tipUpper.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/interface.css" />
+		<link rel="stylesheet" type="text/css" href="css/tipUpperBlack.css" />
+		<link rel="stylesheet" type="text/css" href="css/waiter.css" />
+
+		<style type="text/css">
+			html, body {
+				margin: 0;
+				font-family: Verdana;
+				background: #F0F0F0 url(images/flashlight.png) no-repeat bottom right fixed;
+			}
+
+			html * {
+				box-sizing: border-box;
+			}
+
+			.main {
+				display: block;
+				position: relative;
+				height: 100vh;
+				min-height: 21em;
+				max-width: 50em;
+				margin: 0 auto;
+				z-index: 0;
+				padding: 1em 0;
+			}
+
+			.main > .wrapper {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				height: 100%;
+				padding: 0.5em;
+			}
+
+			h1 {
+				font-family: inherit;
+				margin: 1em;
+				font-size: 3em;
+				font-weight: bold;
+				text-align: center;
+				color:#FFFFFF;
+
+				text-shadow:
+					0 1px 0 #ccc,
+					0 2px 0 #c9c9c9,
+					0 3px 0 #bbb,
+					0 4px 0 #b9b9b9,
+					0 5px 0 #aaa,
+					0 6px 1px rgba(0,0,0,.1),
+					0 0 5px rgba(0,0,0,.1),
+					0 1px 3px rgba(0,0,0,.3),
+					0 3px 5px rgba(0,0,0,.2),
+					0 5px 10px rgba(0,0,0,.25),
+					0 10px 10px rgba(0,0,0,.2),
+					0 20px 20px rgba(0,0,0,.15);
+			}
+
+			h1 span {
+				display: block;
+				font-size: 0.5em;
+				text-shadow: 1px 1px 0 #FFFFFF,2px 2px 0 #A0A0A0;
+				margin-top: 0.5em;
+				color: #000000;
+			}
+
+			h2 {
+				font-family: inherit;
+				margin: 0 1em 1em 1em;
+				font-size: 1.8em;
+				font-weight: bold;
+				text-align: left;
+				color:#000000;
+
+				text-shadow: 1px 1px 0 #FFFFFF,2px 2px 0 #A0A0A0;
+			}
+
+			.descr {
+				font-style: italic;
+				color: #303030;
+				margin: 1em 0;
+			}
+
+			.ui {
+				margin: 1em 0;
+				width: 30em;
+			}
+			.ui:first-child {
+				margin-top: 0;
+			}
+			.ui:last-child {
+				margin-bottom: 0;
+			}
+
+			.modes {
+				margin: 0;
+				padding: 0;
+				max-width: 30em;
+			}
+
+			.modes > li {
+				display: flex;
+			}
+
+			.modes > li > label {
+				order: 1;
+				font-weight: bold;
+			}
+
+			.modes > li > span {
+				order: 3;
+			}
+
+			.modes > li::after {
+				content: "";
+				border-bottom: dotted 0.15em #D9D9D9;
+				flex-grow: 1;
+				order: 2;
+				position: relative;
+				top: -0.7em;
+				margin: 0 1em;
+			}
+
+			.modes > li {
+				margin: 0.2em;
+				padding: 0.2em 0.5em;
+				border-radius: 0.2em;
+				transition: all 0.2s linear;
+			}
+			.modes > li:hover {
+				background-color: #ECECEC;
+			}
+
+			select .d {
+				font-size: 0.3em;
+				line-height: 0.3em;
+				border-bottom: dotted 0.1em #D0D0D0;
+				margin: 0 0 0.8em 0;
+			}
+
+			.default {
+				display: inline-block;
+				font-size: 1.5em;
+				line-height: 1em;
+				height: 1.2em;
+				position: absolute;
+				right: 0.5em;
+				top: 0.9em;
+			}
+
+			.batteryCheck input {
+				display: inline-block;
+				margin-right: 0.5em;
+				width: 3em;
+			}
+
+			.batteryCheck input:last-child {
+				margin-right: 0;
+			}
+
+			.temperature input {
+				width: 3em;
+			}
+
+			.main .controls {
+				width: 30em;
+				padding: 2em 0 3em 0;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="main">
+			<div class="wrapper waiter">
+				<h1>YLP UNICORN 1.0<span>web configurator</span></h1>
+
+				<!-- UI basic -->
+				<div class="block ui">
+					<h2>Basic UI</h2>
+					<div class="default" title="set as default UI"><input type="radio" id="c_1" name="defaultUI" value="1" title="default ui" checked="checked" /><label for="c_1" ><span></span></label></div>
+					<div class="descr">Discrete 5 modes with memory.<br /><b>You can't configure this mode.</b></div>
+					<div>
+						<ul class="modes">
+							<li>
+								<label for="s1_1">2 clicks</label>
+								<span>
+									<select id="s1_1" name="ui1_2clicks" class="mode" disabled="disabled">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness" selected="selected">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s2_1">2 clicks + hold</label>
+								<span>
+									<select id="s2_1" name="ui1_2clicks_hold" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s3_1">3 clicks</label>
+								<span>
+									<select id="s3_1" name="ui1_3clicks" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s4_1">3 clicks + hold</label>
+								<span>
+									<select id="s4_1" name="ui1_3clicks_hold" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s5_1">4 clicks</label>
+								<span>
+									<select id="s5_1" name="ui1_4clicks" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V" selected="selected">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s6_1">4 clicks + hold</label>
+								<span>
+									<select id="s6_1" name="ui1_4clicks_hold" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s7_1">5 clicks</label>
+								<span>
+									<select id="s7_1" name="ui1_5clicks" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s8_1">5 clicks + hold</label>
+								<span>
+									<select id="s8_1" name="ui1_5clicks_hold" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s9_1">6 clicks</label>
+								<span>
+									<select id="s9_1" name="ui1_6clicks" class="mode" disabled="disabled">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="ct"></div>
+					<div class="cb"></div>
+				</div>
+
+				<!-- UI1 -->
+				<div class="block ui">
+					<h2>UI 1</h2>
+					<div class="default" title="set as default UI"><input type="radio" id="c_2" value="2" name="defaultUI" title="default ui" /><label for="c_2" ><span></span></label></div>
+					<div class="descr"><b>Ramping memory on.</b><br /><br />You can customise flashlight behaviour on key pressing/holding by change binding functions to this combinations.</div>
+					<div>
+						<ul class="modes">
+							<li>
+								<label for="s1_2">2 clicks</label>
+								<span>
+									<select id="s1_2" name="ui2_2clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness" selected="selected">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s2_2">2 clicks + hold</label>
+								<span>
+									<select id="s2_2" name="ui2_2clicks_hold" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s3_2">3 clicks</label>
+								<span>
+									<select id="s3_2" name="ui2_3clicks" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s4_2">3 clicks + hold</label>
+								<span>
+									<select id="s4_2" name="ui2_3clicks_hold" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s5_2">4 clicks</label>
+								<span>
+									<select id="s5_2" name="ui2_4clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V" selected="selected">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s6_2">4 clicks + hold</label>
+								<span>
+									<select id="s6_2" name="ui2_4clicks_hold" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s7_2">5 clicks</label>
+								<span>
+									<select id="s7_2" name="ui2_5clicks" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s8_2">5 clicks + hold</label>
+								<span>
+									<select id="s8_2" name="ui2_5clicks_hold" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s9_2">6 clicks</label>
+								<span>
+									<select id="s9_2" name="ui2_6clicks" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="ct"></div>
+					<div class="cb"></div>
+				</div>
+
+				<!-- UI2 -->
+				<div class="block ui">
+					<h2>UI 2</h2>
+					<div class="default" title="set as default UI"><input type="radio" id="c_3" value="3" name="defaultUI" title="default ui" /><label for="c_3" ><span></span></label></div>
+					<div class="descr"><b>Ramping on, memory on, button backlight on.</b><br /><br />You can customise flashlight behaviour on key pressing/holding by change binding functions to this combinations.</div>
+					<div>
+						<ul class="modes">
+							<li>
+								<label for="s1_3">2 clicks</label>
+								<span>
+									<select id="s1_3" name="ui3_2clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness" selected="selected">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s2_3">2 clicks + hold</label>
+								<span>
+									<select id="s2_3" name="ui3_2clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?" selected="selected">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s3_3">3 clicks</label>
+								<span>
+									<select id="s3_3" name="ui3_3clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off" selected="selected">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s4_3">3 clicks + hold</label>
+								<span>
+									<select id="s4_3" name="ui3_3clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off" selected="selected">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s5_3">4 clicks</label>
+								<span>
+									<select id="s5_3" name="ui3_4clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V" selected="selected">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s6_3">4 clicks + hold</label>
+								<span>
+									<select id="s6_3" name="ui3_4clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap" selected="selected">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s7_3">5 clicks</label>
+								<span>
+									<select id="s7_3" name="ui3_5clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state" selected="selected">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s8_3">5 clicks + hold</label>
+								<span>
+									<select id="s8_3" name="ui3_5clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage" selected="selected">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s9_3">6 clicks</label>
+								<span>
+									<select id="s9_3" name="ui3_6clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock" selected="selected">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="ct"></div>
+					<div class="cb"></div>
+				</div>
+
+				<!-- UI3 -->
+				<div class="block ui">
+					<h2>UI 3</h2>
+					<div class="default" title="set as default UI"><input type="radio" id="c_4" value="4" name="defaultUI" title="default ui" /><label for="c_4" ><span></span></label></div>
+					<div class="descr"><b>Discrete 5 modes on, memory off, start level medium.</b><br /><br />You can customise flashlight behaviour on key pressing/holding by change binding functions to this combinations.</div>
+					<div>
+						<ul class="modes">
+							<li>
+								<label for="s1_4">2 clicks</label>
+								<span>
+									<select id="s1_4" name="ui4_2clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness" selected="selected">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s2_4">2 clicks + hold</label>
+								<span>
+									<select id="s2_4" name="ui4_2clicks_hold" class="mode">
+										<option title="not in use" selected="selected">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s3_4">3 clicks</label>
+								<span>
+									<select id="s3_4" name="ui4_3clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off" selected="selected">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s4_4">3 clicks + hold</label>
+								<span>
+									<select id="s4_4" name="ui4_3clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off" selected="selected">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s5_4">4 clicks</label>
+								<span>
+									<select id="s5_4" name="ui4_4clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V" selected="selected">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s6_4">4 clicks + hold</label>
+								<span>
+									<select id="s6_4" name="ui4_4clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap" selected="selected">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s7_4">5 clicks</label>
+								<span>
+									<select id="s7_4" name="ui4_5clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state" selected="selected">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s8_4">5 clicks + hold</label>
+								<span>
+									<select id="s8_4" name="ui4_5clicks_hold" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage" selected="selected">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+							<li>
+								<label for="s9_4">6 clicks</label>
+								<span>
+									<select id="s9_4" name="ui4_6clicks" class="mode">
+										<option title="not in use">none</option>
+										<option title="act as default">default</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="switch flashlight on maximum brightness">maximum</option>
+										<option title="12.5Hz 10ms stroboscope on/off">stroboscope</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="CHECK BATTERY STATE&#10;5 flashes – voltage higher than 4.06V (80%)&#10;4 flashes – voltage higher than 3.86V (60%)&#10;3 flashes – voltage higher than 3.7V (40%)&#10;2 flashes – voltage higher than 3.62V (20%)&#10;1 flash  – voltage lower than 3.62V">battery check</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="main led beacon on/off">beacon main led</option>
+										<option title="button beacon on/off in off state">beacon button in off</option>
+										<option title="button backlight on/off in off state">backlight button in off</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="SET BUTTON TO TACTICAL MODE&#10;flashlight is on when button is pressed and holding, and switches off when releases&#10;to exit from this mode - remove cap">tactical mode</option>
+										<option title="button lock/unlock"  selected="selected">button lock</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="memory modes on/off">memory modes</option>
+										<option title="discrete brightness adjustment on/off">discrete brightness</option>
+										<option title="wtf?">additional mode</option>
+										<option disabled="disabled" class="d"></option>
+										<option title="load UI1 settings from storage">load UI1</option>
+										<option title="load UI2 settings from storage">load UI2</option>
+										<option title="load UI3 settings from storage">load UI3</option>
+									</select>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="ct"></div>
+					<div class="cb"></div>
+				</div>
+
+				<div class="block ui">
+					<h2>Sensors</h2>
+					<ul class="modes">
+						<li class="temperature">
+							<label for="s1_4">t calibration, °C</label>
+							<span><input type="text" name="t_calibration" value="25" /></span>
+						</li>
+						<li class="temperature">
+							<label for="s1_4">t control, °C</label>
+							<span><input type="text" name="t_control" value="50" /></span>
+						</li>
+						<li class="batteryCheck">
+							<label for="s1_4">bat check, V</label>
+							<span><input type="text" name="battery_check_5" value="4.06" title="this voltage and higher - 1 flash" /><input type="text" name="battery_check_4" value="3.86" title="this voltage and higher - 1 flash" /><input type="text" name="battery_check_3" value="3.7" title="this voltage and higher - 1 flash" /><input type="text" name="battery_check_2" value="3.62" title="this voltage and higher - 1 flash" /><input type="text" name="battery_check_1" value="3.62" title="this voltage and higher - 1 flash" /></span>
+						</li>
+					</ul>
+					<div class="ct"></div>
+					<div class="cb"></div>
+				</div>
+
+				<div class="controls">
+					<div class="button save" title="save settings to file">Save</div>
+					<div class="load" title="load settings from file"></div>
+					<div class="button reset" title="reset settings to factory defaults">Reset to defaults</div>
+				</div>
+			</div>
+		</form>
+		<script type="text/javascript">
+			$( function() {
+/*
+				$( "select" ).mouseover(
+					function () {
+						var t = this.selectedIndex >= 0 ? this.options[ this.selectedIndex ].getAttribute( "title" ) : null;
+						if ( t ) tipUpper.single( this, t.replace( /\n/g, '<br />' ) );
+					}
+				).mouseout( function() { tipUpper.single.hide(); } );
+*/
+				$( "*:not(option)[title]" ).mouseover(
+					function () {
+						var t = this.getAttribute( "data-title" );
+						if ( !t ) {
+							t = this.getAttribute( "title" );
+							if ( t ) {
+								this.setAttribute( "data-title", t );
+								this.removeAttribute( "title" );
+							}
+						}
+
+						tipUpper.single( this, t.replace( /\n/g, '<br />' ) );
+					}
+				).mouseout( function() { tipUpper.single.hide(); } );
+
+				$( ".reset:first" ).click( function() {
+					SITE.confirm(
+						"Reset all settings to defaults?",
+						function( e ) {
+							if ( e == "ok" ) {
+								$( "form:first" )[0].reset();
+								return true;
+							}
+							if ( e == "cancel" ) {
+								$( "form:first" )[0].reset();
+								return true;
+							}
+						}
+					);
+				} );
+
+				$( ".save:first" ).click( function() {
+    				var t = $( "form:first" ).serializeArray();
+    				var settings = {};
+					$.map( t, function( n, i ) { settings[ n["name"] ] = n["value"];} );
+					SITE.download( JSON.stringify( settings ), "ylp_unicorn_settings.txt", "text/plain" );
+				} );
+
+				SITE.loadMakeButton(
+					$( ".load:first" ),
+					"Load",
+					function( data, status ) {
+						try {
+							if ( !data || !status ) throw new Error( "can't load settings" );
+							data = JSON.parse( data );
+							for ( var i in data ) {
+								if ( data.hasOwnProperty( i ) ) {
+									var $el = $( "*[name=" + i + "]" );
+									//checkbox or radio
+									if ( $el[0].type == "checkbox" || $el[0].type == "radio" ) {
+										$el.each( function() { if ( this.value == data[ i ] ) this.checked = true; } );
+									}
+									else $el.eq( 0 ).val( data[ i ] );
+								}
+							}
+
+							SITE.msg( "Settings are loaded." );
+						}
+						catch ( e ) {
+							SITE.msg( e.message, "ERROR settings loading" );
+						}
+					}
+				);
+			} );
+		</script>
+	</body>
+</html>
