@@ -191,7 +191,7 @@
 				<div class="block ui">
 					<h2>Basic UI</h2>
 					<div class="default" title="set as default UI"><input type="radio" id="c_1" name="defaultUI" value="1" title="default ui" checked="checked" /><label for="c_1" ><span></span></label></div>
-					<div class="descr">Discrete 5 modes with memory.<br /><b>You can't configure this mode.</b></div>
+					<div class="descr"><b>Discrete 5 modes with memory.<br /><br />You can't configure this mode.</b></div>
 					<div>
 						<ul class="modes">
 							<li>
@@ -1341,6 +1341,7 @@
 						function( e ) {
 							if ( e == "ok" ) {
 								$( "form:first" )[0].reset();
+								SITE.msg( "Settings was reverted to factory defaults." );
 								return true;
 							}
 							if ( e == "cancel" ) {
